@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "494511751510",
+    "project_id": "note-me-ae9f9",
+    "storage_bucket": "note-me-ae9f9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494511751510:android:e4873053eb06332c3e16f7",
+        "android_client_info": {
+          "package_name": "com.stargazer.noteme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1vvDuzcIcTHe4o7cDAQ2khD5Ev_PgslA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
