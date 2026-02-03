@@ -1,4 +1,4 @@
-package com.stargazer.noteme.database
+package com.stargazer.noteme.data.local
 
 import android.content.Context
 import androidx.room.Database
@@ -17,7 +17,7 @@ abstract class NoteDB: RoomDatabase(){
         private var INSTANCE: NoteDB? = null
 
         //context parametresi istememizin sebebi şu context olmadan bu database telefonun hafızasına erişip orada kendine bir yer açamaz
-        fun getDatabase(context: Context): NoteDB{
+        fun getDatabase(context: Context): NoteDB {
             return INSTANCE ?: synchronized(this){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,

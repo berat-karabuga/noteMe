@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp") version "2.0.21-1.0.27"
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0"
+
 }
 
 android {
@@ -43,9 +45,9 @@ android {
 
 dependencies {
     //FireBase
-    implementation(platform("google.firebase:firebase-bom:34.0.0")) // bom kullanarak versiyon çakışmalarını engelleriz
-    implementation("google.firebase:firebase-storage-ktx") // Fotoğraflar için depolama
-    implementation("google.firebase:firebase-auth-ktx") // ileride giriş sistemi gerekebilir
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0")) // Versiyonu stabil bir sürüme çektik
+    implementation("com.google.firebase:firebase-storage-ktx") // Versiyon numarasını sildik (BoM yönetiyor)
+    implementation("com.google.firebase:firebase-auth-ktx")    // Versiyon numarasını sildik
 
     // Retrofit - İnternet üzerinden veri alışverişi
     val retrofit_version = "2.11.0"
@@ -56,7 +58,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.7.0")
 
 // Room - Yerel veritabanı
-    val room_version = "2.7.0-alpha01"
+    val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     // kapt yerine ksp kullanıyoruz:
@@ -84,6 +86,7 @@ dependencies {
     // Neden? Veritabanına kayıt yapmak veya internetten fotoğraf çekmek ağır işlerdir.
     // Bu işleri yaparken uygulamanın donmaması için arka planda çalışmalarını sağlarız.
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

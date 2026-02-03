@@ -1,12 +1,13 @@
-package com.stargazer.noteme.database
+package com.stargazer.noteme.data.local
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
-
+@Dao
 interface NoteDao {
 
     @Insert (onConflict = OnConflictStrategy.REPLACE) //kelime anlamından da anlaşılacağı üzere veriyi ınsert ediyor ayrıca aynı id ile not ınsert edilirse ne yapılması gerektiğini anlatıyor yapacağı şey işse raplace yani eskinin üzerine yazacak yeni notu

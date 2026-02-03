@@ -1,4 +1,4 @@
-package com.stargazer.noteme.database
+package com.stargazer.noteme.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
