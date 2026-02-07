@@ -7,9 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.stargazer.noteme.data.local.NoteEntity
 import com.stargazer.noteme.ui.screens.addnote.AddNoteScreen
 import com.stargazer.noteme.ui.screens.home.HomeScreenContent
+import com.stargazer.noteme.ui.screens.notedetail.NoteDetailScreen
 import com.stargazer.noteme.ui.viewmodel.NoteViewModel
 
 
@@ -27,7 +29,7 @@ fun NoteNavHost(
 
         //ilk rotamız olan homeroute un içine anasayfamız olan scaffoldScreeni çağırıyoruz
         composable<HomeRoute> {
-            HomeScreenContent(viewModel = viewModel)
+            HomeScreenContent(viewModel = viewModel,navController=navController)
         }
 
         composable<AddNoteRoute> {
@@ -37,6 +39,16 @@ fun NoteNavHost(
                     navController.popBackStack()
                 },
                 onShowCategory = {}
+            )
+        }
+
+        composable<NoteDetailRoute> { backStackEntry ->
+            val detailRoute: NoteDetailRoute = backStackEntry.toRoute()
+            val noteId = detailRoute.noteId
+
+            NoteDetailScreen(
+                noteId = noteId,
+                viewModel = viewModel
             )
         }
     }

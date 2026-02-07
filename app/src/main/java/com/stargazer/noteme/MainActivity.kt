@@ -47,7 +47,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            NoteMeTheme {
+            NoteMeTheme() {
+
 
                 val bottomBarColor = MaterialTheme.colorScheme.secondaryContainer
                 SideEffect {

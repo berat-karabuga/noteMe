@@ -16,9 +16,26 @@ class NoteRepository(private val noteDao: NoteDao){
     suspend fun insert(note: NoteEntity){ //note ekleme komutu
         noteDao.insertNote(note)
     }
-    suspend fun delete(note: NoteEntity){ //note silme komutu
-        noteDao.deleteNote(note)
+
+    fun getSingleNote(id: Int): Flow<NoteEntity?>{
+        return noteDao.getSingelNote(id)
     }
+
+    suspend fun deleteNote(note: NoteEntity){
+        try {
+            note.imageUrl?.let { url ->
+                if (url.isNotEmpty()) {
+                    val imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(url)
+                    imageRef.delete().await()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            noteDao.deleteNote(note)
+        }
+    }
+
 
     suspend fun uploadImage(imageUri: Uri): String{
         return try {

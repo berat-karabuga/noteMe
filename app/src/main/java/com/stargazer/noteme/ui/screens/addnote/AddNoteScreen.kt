@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -36,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -62,136 +65,157 @@ fun AddNoteScreen(
     var showDialog by remember { mutableStateOf(false) }
     var selectedCategoryIsFavorite by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    var isLoading by remember { mutableStateOf(false) }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            OutlinedTextField(
-                value = subject,
-                onValueChange = {subject = it},
-                label = { Text("Subject") },
-                modifier = Modifier.weight(1f)
-            )
+    Box(modifier = Modifier.fillMaxSize()){
 
-            Spacer(modifier = Modifier.padding(8.dp))
+        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
 
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.onSecondaryContainer
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                modifier = Modifier
-                    .size(130.dp,130.dp)
-                    .clickable {
-                        photoPickerLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        )
-                    }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                    if (selectedImageUri != null){
-                        AsyncImage(
-                            model = selectedImageUri,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    }else{
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(
-                                Icons.Default.Add,
-                                contentDescription = "Add Image",
-                                modifier = Modifier.size(48.dp),
-                                tint = MaterialTheme.colorScheme.secondary
+                OutlinedTextField(
+                    value = subject,
+                    onValueChange = {subject = it},
+                    label = { Text("Subject") },
+                    modifier = Modifier.weight(1f)
+                )
+
+                Spacer(modifier = Modifier.padding(8.dp))
+
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    modifier = Modifier
+                        .size(130.dp,130.dp)
+                        .clickable {
+                            photoPickerLauncher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                             )
-                            Text("Add Image", style = MaterialTheme.typography.labelLarge)
                         }
+                ) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                        if (selectedImageUri != null){
+                            AsyncImage(
+                                model = selectedImageUri,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }else{
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(
+                                    Icons.Default.Add,
+                                    contentDescription = "Add Image",
+                                    modifier = Modifier.size(48.dp),
+                                    tint = MaterialTheme.colorScheme.secondaryContainer
+                                )
+                                Text("Add Image", style = MaterialTheme.typography.labelLarge)
+                            }
+                        }
+
                     }
 
                 }
 
+
             }
 
 
-        }
 
+            Spacer(modifier = Modifier.height(16.dp))
 
+            OutlinedTextField(
+                value = body,
+                onValueChange = {body = it},
+                label = { Text("Your note")},
+                modifier = Modifier.fillMaxWidth().weight(1f)
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Row(modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally)) {
 
-        OutlinedTextField(
-            value = body,
-            onValueChange = {body = it},
-            label = { Text("Your note")},
-            modifier = Modifier.fillMaxWidth().weight(1f)
-        )
-
-        Row(modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally)) {
-
-            if (showDialog){
-                AlertDialog(
-                    onDismissRequest = {showDialog = false},
-                    confirmButton = {
-                        TextButton(onClick = {
-                            showDialog =false
-                        }) {
-                            Text("Okay")
-                        }
-                    },
-                    title = { Text("Select Category")},
-                    text = {
-                        Column {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { selectedCategoryIsFavorite = !selectedCategoryIsFavorite }
-                                    .padding(8.dp)
-                            ) {
-                                RadioButton(
-                                    selected = selectedCategoryIsFavorite,
-                                    onClick = {selectedCategoryIsFavorite = !selectedCategoryIsFavorite}
-                                )
-                                Text("Favorites", modifier = Modifier.padding(start = 8.dp))
+                if (showDialog){
+                    AlertDialog(
+                        onDismissRequest = {showDialog = false},
+                        confirmButton = {
+                            TextButton(onClick = {
+                                showDialog =false
+                            }) {
+                                Text("Confirm")
+                            }
+                        },
+                        title = { Text("Select Category")},
+                        text = {
+                            Column {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { selectedCategoryIsFavorite = !selectedCategoryIsFavorite }
+                                        .padding(8.dp)
+                                ) {
+                                    RadioButton(
+                                        selected = selectedCategoryIsFavorite,
+                                        onClick = {selectedCategoryIsFavorite = !selectedCategoryIsFavorite}
+                                    )
+                                    Text("Favorites", modifier = Modifier.padding(start = 8.dp))
+                                }
                             }
                         }
-                    }
-                )
-            }
+                    )
+                }
 
 
-            Button(
-                onClick = {showDialog = true},
-                elevation = ButtonDefaults.elevatedButtonElevation(
-                    defaultElevation = 8.dp,
-                    pressedElevation = 2.dp,
-                    hoveredElevation = 10.dp
-                )
+                Button(
+                    onClick = {showDialog = true},
+                    elevation = ButtonDefaults.elevatedButtonElevation(
+                        defaultElevation = 8.dp,
+                        pressedElevation = 2.dp,
+                        hoveredElevation = 10.dp
+                    )
                 ) {
-                Text("Select Category")
+                    Text("Select Category")
+                }
+
+                Spacer(modifier = Modifier.padding(16.dp))
+
+                Button(
+                    onClick = {
+                        onSaveButton(subject,body,selectedImageUri,selectedCategoryIsFavorite)
+                        isLoading = true
+                    },
+                    elevation = ButtonDefaults.elevatedButtonElevation(
+                        defaultElevation = 8.dp,
+                        pressedElevation = 2.dp,
+                        hoveredElevation = 10.dp
+                    )
+                ) {
+                    Text("Save")
+                }
+
+
             }
+        }
 
-            Spacer(modifier = Modifier.padding(16.dp))
-
-            Button(
-                onClick = {
-                    onSaveButton(subject,body,selectedImageUri,selectedCategoryIsFavorite)
-                },
-                elevation = ButtonDefaults.elevatedButtonElevation(
-                    defaultElevation = 8.dp,
-                    pressedElevation = 2.dp,
-                    hoveredElevation = 10.dp
+        if(isLoading){
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f))
+                    .clickable(enabled = false) { },
+                contentAlignment = Alignment.Center
+            ){
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.secondary
                 )
-            ) {
-                Text("Save")
             }
-
-
         }
     }
+
 }
 
 
