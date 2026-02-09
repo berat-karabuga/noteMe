@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -65,7 +66,7 @@ fun NoteDetailScreen(
                     OutlinedTextField(
                         value = currentNote.title,
                         onValueChange = {},
-                        label = { Text("Subject") },
+                        label = { Text("Subject", color =  if (isFavoriteState) MaterialTheme.colorScheme.primary else Color.Black) },
                         readOnly = true,
                         modifier = Modifier.weight(1f)
                     )
@@ -117,7 +118,7 @@ fun NoteDetailScreen(
                 OutlinedTextField(
                     value = currentNote.content,
                     onValueChange = {},
-                    label = { Text("Your note") },
+                    label = { Text("Your note", color = if (isFavoriteState) MaterialTheme.colorScheme.primary else Color.Black) },
                     readOnly = true,
                     modifier = Modifier.fillMaxWidth().weight(1f)
                 )
@@ -164,7 +165,7 @@ fun NoteDetailScreen(
                                     selected = isFavoriteState == true,
                                     onClick = {isFavoriteState = true}
                                 )
-                                Text("Favorites", modifier = Modifier.padding(start = 8.dp))
+                                Text("Favorites", modifier = Modifier.padding(start = 8.dp), color = MaterialTheme.colorScheme.primary)
                             }
 
                             Row(
@@ -180,7 +181,7 @@ fun NoteDetailScreen(
                                         isFavoriteState = false
                                     }
                                 )
-                                Text("No Category (Default)", modifier = Modifier.padding(start = 8.dp))
+                                Text("No Category (Default)", modifier = Modifier.padding(start = 8.dp), color = Color.Black)
                             }
 
                         }

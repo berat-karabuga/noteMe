@@ -22,12 +22,12 @@ fun NoteNavHost(
     paddingValues: PaddingValues
 ) {
     NavHost(
-        navController = navController, //uygulama içerisindeki rotaların kaptanını çağırmış olduk
-        startDestination = HomeRoute, //rotaların başlangıç noktasını belirttik
+        navController = navController, //We have called the captain of the routes within the application
+        startDestination = HomeRoute, //We specified the starting point of the routes
         modifier = Modifier.padding(paddingValues)
     ) {
 
-        //ilk rotamız olan homeroute un içine anasayfamız olan scaffoldScreeni çağırıyoruz
+        //We call our homepage scaffoldScreen inside our first route homeroute
         composable<HomeRoute> {
             HomeScreenContent(viewModel = viewModel,navController=navController)
         }

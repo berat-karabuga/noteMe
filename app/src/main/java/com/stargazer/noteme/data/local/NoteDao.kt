@@ -10,17 +10,17 @@
     @Dao
     interface NoteDao {
 
-        @Insert (onConflict = OnConflictStrategy.REPLACE) //kelime anlamından da anlaşılacağı üzere veriyi ınsert ediyor ayrıca aynı id ile not ınsert edilirse ne yapılması gerektiğini anlatıyor yapacağı şey işse raplace yani eskinin üzerine yazacak yeni notu
+        @Insert (onConflict = OnConflictStrategy.REPLACE) //As the name suggests it inserts data and also explains what to do if a note is inserted with the same ıd if itss a job it will use `raplace` meaning it will overwrite the old note with a new one
         suspend fun insertNote (note: NoteEntity)
 
-        @Delete //notu silmek için gerekli
+        @Delete //required to delete the note
         suspend fun deleteNote (note: NoteEntity)
 
-        // tablodaki tüm notoları getirmek için kullanılır (select * from notesentitiy), ayrıca getirdiğin notların en yakın tarihten en eskiye göre soralanmasını sağlar(order by date DESC)
+        // Used to retrieve all notes from the table (select * from notesentity) also sorts the retrieved notes from the most recent to the oldest date (order by date DESC)
         @Query ("SELECT * FROM notesEntity ORDER BY date DESC")
         fun getAllNotes(): Flow<List<NoteEntity>>
 
-        //seçim yapmak için tabloya giy ve isFavorite kısımlarında 1 olan yani isfavorit'e dahil olanları getir bir nevi filtreleme
+        //To make a selection insert the items into the table and bring in those that are marked 1 in the 'isFavorite' section i.e. those included in 'isfavorite' its a kind of filtering
         @Query("SELECT * FROM notesEntity WHERE isFavorite = 1")
         fun getAllFavorites(): Flow<List<NoteEntity>>
 

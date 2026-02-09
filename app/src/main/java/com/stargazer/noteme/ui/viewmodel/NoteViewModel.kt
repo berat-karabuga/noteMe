@@ -17,9 +17,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class NoteViewModel(private val repository: NoteRepository) :ViewModel() {
-    //repositorydeki işlemleri viewmodele bağlıyoruz
+    // We link the operations in the repository to the viewmodel
 
-    val allNotes= repository.allNotes //tüm notları çağırma
+    val allNotes= repository.allNotes //calling all notes
     val favoriNotes = repository.getFavorites
     var selectedNoteForDelete by mutableStateOf<NoteEntity?>(null)
     val favoriteNotes = repository.getFavorites.stateIn(
@@ -29,18 +29,19 @@ class NoteViewModel(private val repository: NoteRepository) :ViewModel() {
     )
     var selectedCategoryByHome by mutableStateOf<String?>(null)
 
-    fun insert(note: NoteEntity) = viewModelScope.launch { //not ekleme
+    fun insert(note: NoteEntity) = viewModelScope.launch { //add note
         repository.insert(note)
     }
 
 
-    //parametre olarak aldığımız note bir noteEnity olacak sonra o aldığımız not için repositorydeki delete işlemini çağırıcaz parametre olarak da aldığımız note u ekliyoruz
+    /*The note we receive as a parameter will be a noteEnity then we will call the delete operation in the repository
+    for that note and we add the note we received as a parameter*/
     fun getsingelNote(id: Int):Flow<NoteEntity?>{
         return repository.getSingleNote(id)
     }
 
     fun updateNote(note: NoteEntity) = viewModelScope.launch {
-        repository.insert(note) // Room'da OnConflictStrategy.REPLACE olduğu için insert aynı ID ile gelirse günceller.
+        repository.insert(note) //Since there is an OnConflictStrategy.REPLACE in the room it updates if the insert comes with the same ıd
     }
 
 
@@ -70,7 +71,7 @@ class NoteViewModel(private val repository: NoteRepository) :ViewModel() {
                 title = title,
                 content = content,
                 date = System.currentTimeMillis(),
-                imageUrl = uploadedUrl, // Firebase'den gelen link buraya (Room)
+                imageUrl = uploadedUrl, //The link from Firebase goes here
                 isFavorite = isFavorite
             )
             repository.insert(newNote)

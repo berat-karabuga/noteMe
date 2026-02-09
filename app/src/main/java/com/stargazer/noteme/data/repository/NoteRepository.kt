@@ -10,10 +10,10 @@ import java.util.UUID
 
 class NoteRepository(private val noteDao: NoteDao){
     private val storageInstance = FirebaseStorage.getInstance().reference
-    val allNotes: Flow<List<NoteEntity>> = noteDao.getAllNotes() //tüm notları alma komutu
-    val getFavorites: Flow<List<NoteEntity>> = noteDao.getAllFavorites() //tüm favorileri alma komutu
+    val allNotes: Flow<List<NoteEntity>> = noteDao.getAllNotes() //command to get all notes
+    val getFavorites: Flow<List<NoteEntity>> = noteDao.getAllFavorites() //command to get all favorites
 
-    suspend fun insert(note: NoteEntity){ //note ekleme komutu
+    suspend fun insert(note: NoteEntity){ //note insertion command
         noteDao.insertNote(note)
     }
 
@@ -39,14 +39,14 @@ class NoteRepository(private val noteDao: NoteDao){
 
     suspend fun uploadImage(imageUri: Uri): String{
         return try {
-            //UUID sayesinde her görsel için özel bir isim oluşturucaz
+            //Thanks to the UUID we will create a unique name for each image
             val fileName = "images/${UUID.randomUUID()}.jpg"
             val imageRef = storageInstance.child(fileName)
 
-            //not yüklenene kadar beklenmesini istiyorum
+            //I want to wait until the note loads.
             imageRef.putFile(imageUri).await()
 
-            //yüklenen görselin linkini alıyorum
+            //I'm getting the link to the uploaded image
             val downloadUrl = imageRef.downloadUrl.await()
             downloadUrl.toString()
 

@@ -5,19 +5,20 @@ import androidx.lifecycle.ViewModelProvider
 import com.stargazer.noteme.data.repository.NoteRepository
 
 class NoteViewModelFactory(private val repository: NoteRepository) : ViewModelProvider.Factory {
-    //android sistemi viewModel üretmek istediğinde bu kodu kullanacak kendi bildiği sistem yerine
+    //When the Android system wants to generate a viewModel, it will use this code instead of its own familiar system.
 
-    /* şimdi burada<T> yani jenerik türleri kullanıyoruz örneğin mesela <T: ViewModel> burada şunu demiş oluyoruz ben bir
-    * T türüyle çalışıcam ama bu mutlaka bir viewmodel ya da onun çocuğu olmalı
-    * modelClass: Class<T> oluşturulacak viewmodelin sınıf bilgisini alıyoruz ve :T döndürüyoruz yani
-    * hangi viewmodel türünü istediysem onu alıcam çünkü farklı viewmodeller oluşturup onları da bu factory ile kullanmak isteyebilirim*/
+
+    /* Now here we are using generic types for example <T: ViewModel> this means I will work with a type T
+     but it must be a viewmodel or its child modelClass: Class<T> takes the class information of the viewmodel to be created and
+      returns :T that is I will take whichever viewmodel type I want because I might want to create different
+      viewmodels and use them with this factory*/
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
 
         if (modelClass.isAssignableFrom(NoteViewModel::class.java)){
-            //sisteme diyoruz ki abi ben kontrol ettim sıkıntı yok sen sus yokssa o güvenli bulmayıp hata veriyor
+            //We tell the system I checked theress no problem you be quiet otherwise it will give an error because it doesnt find it safe
             @Suppress("UNCHECKED_CAST")
-            //NoteViewModel objesini T döndürüyoruz çünkü T dönmesini istemiştik başta
+            //We return T to the NoteViewModel object because we initially wanted it to return T
             return NoteViewModel(repository) as T
         }
 

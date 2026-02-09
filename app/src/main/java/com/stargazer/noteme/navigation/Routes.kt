@@ -2,7 +2,7 @@ package com.stargazer.noteme.navigation
 
 import kotlinx.serialization.Serializable
 
-//gitmesini istediğimiz rotaların isimlerini tanımlıyoruz
+// We define the names of the routes we want it to take
 @Serializable
 object HomeRoute
 

@@ -26,18 +26,19 @@ import com.stargazer.noteme.ui.viewmodel.NoteViewModelFactory
 class MainActivity : ComponentActivity() {
 
     private val noteViewModel: NoteViewModel by lazy {
-        // database oluşturuyoruz sınıfımızı çağırıp içine applicationContext verdik
+        // Initialize database using the singleton instance
         val noteDB = NoteDB.getDatabase(applicationContext)
 
-        // repomuzu oluşturuyoruz ancak çalışması için bir daoya ihtiyaç var o yüzden db ye tanımlı noteDao yu çağırıyoruz
+        // We are creating our repository but it needs a DAO to work, so we are calling the noteDAO defined in the database
         val noteRepository = NoteRepository(noteDB.noteDao())
 
-        // fabrikamızı oluşturuyoruz parametre olarak repo istiyor bizde repoyu tanımladığımız noterepo değişkenini çağırdık
+        /* We are creating our factory; it requires a repository as a parameter
+         so we called the noteRepository variable where we defined the repository*/
         val noteViewModelFactory = NoteViewModelFactory(noteRepository)
 
-        // son olarak viewmodel oluşturmak için önce viewmodel sağlayacı komutunu çağırıyoruz ardından owner olarak this yani
-        // noteViewModel değişkeni olduğunu belirtiyoruz nasıl sağlayacığını da belirtmek için factory i çağırıyoruz
-        // istediğimiz owner ve factoryi kullanarak da get komutuyla aldığımız NoteViewModeli kurmasını sağlıyoruz
+        /* Finally to create the viewmodel we first call the viewmodel provider command then specify that the owner is this
+         which is the noteViewModel variable o specify how to provide it, we call the factory Using the desired owner and factory
+         we ensure that it creates the NoteViewModel that we obtained with the get command */
         ViewModelProvider(this, noteViewModelFactory).get(NoteViewModel::class.java)
     }
 
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
             NoteMeTheme() {
 
 
-                val bottomBarColor = MaterialTheme.colorScheme.secondaryContainer
+                val bottomBarColor = MaterialTheme.colorScheme.secondary
                 SideEffect {
                     window.navigationBarColor = bottomBarColor.toArgb()
                 }

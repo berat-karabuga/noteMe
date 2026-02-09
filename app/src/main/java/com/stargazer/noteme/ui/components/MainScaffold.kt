@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -52,7 +53,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.stargazer.noteme.navigation.AddNoteRoute
 import com.stargazer.noteme.navigation.HomeRoute
 import com.stargazer.noteme.navigation.NoteNavHost
-import com.stargazer.noteme.ui.theme.NoteMeGradient
 import com.stargazer.noteme.ui.viewmodel.NoteViewModel
 
 
@@ -73,7 +73,7 @@ fun MainScaffold(
                 AlertDialog(
                     onDismissRequest = { showDeleteDialog = false },
                     title = { Text("Delete Note") },
-                    text = { Text("Are you sure you want to delete this note? This action is irreversible.") },
+                    text = { Text("Are you sure you want to delete this note? This action is irreversible.", color = Color.Black) },
                     confirmButton = {
                         TextButton(
                             onClick = {
@@ -100,7 +100,7 @@ fun MainScaffold(
                     FloatingActionButton(
                         onClick = { navController.navigate(AddNoteRoute) },
                         containerColor = MaterialTheme.colorScheme.secondary) {
-                        Icon(Icons.Default.Add, contentDescription = "Add")
+                        Icon(Icons.Default.Add, contentDescription = "Add",Modifier.size(32.dp))
                     }
                 }
 
@@ -175,7 +175,7 @@ private fun BottomBarItem(
         targetValue = if (isSelected)
             MaterialTheme.colorScheme.primary
         else
-            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+            Color.White.copy(alpha = 0.6f),
         label = "color"
     )
 
@@ -200,7 +200,7 @@ private fun BottomBarItem(
             imageVector = icon,
             contentDescription = label,
             modifier = Modifier.size(28.dp),
-            tint = animatedColor
+            tint = Color.White,
         )
 
     }

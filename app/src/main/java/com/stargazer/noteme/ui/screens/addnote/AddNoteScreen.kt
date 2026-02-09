@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -79,7 +81,7 @@ fun AddNoteScreen(
                 OutlinedTextField(
                     value = subject,
                     onValueChange = {subject = it},
-                    label = { Text("Subject") },
+                    label = { Text("Subject", color = Color.Black) },
                     modifier = Modifier.weight(1f)
                 )
 
@@ -132,7 +134,7 @@ fun AddNoteScreen(
             OutlinedTextField(
                 value = body,
                 onValueChange = {body = it},
-                label = { Text("Your note")},
+                label = { Text("Your note", color = Color.Black)},
                 modifier = Modifier.fillMaxWidth().weight(1f)
             )
 
@@ -160,9 +162,13 @@ fun AddNoteScreen(
                                 ) {
                                     RadioButton(
                                         selected = selectedCategoryIsFavorite,
-                                        onClick = {selectedCategoryIsFavorite = !selectedCategoryIsFavorite}
+                                        onClick = {selectedCategoryIsFavorite = !selectedCategoryIsFavorite},
+                                        colors = RadioButtonDefaults.colors(
+                                            selectedColor = MaterialTheme.colorScheme.primary,
+                                            unselectedColor = Color.Gray
+                                        )
                                     )
-                                    Text("Favorites", modifier = Modifier.padding(start = 8.dp))
+                                    Text("Favorites", modifier = Modifier.padding(start = 8.dp), color = Color.Black)
                                 }
                             }
                         }
@@ -176,6 +182,9 @@ fun AddNoteScreen(
                         defaultElevation = 8.dp,
                         pressedElevation = 2.dp,
                         hoveredElevation = 10.dp
+                    ),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
                     )
                 ) {
                     Text("Select Category")
@@ -192,6 +201,9 @@ fun AddNoteScreen(
                         defaultElevation = 8.dp,
                         pressedElevation = 2.dp,
                         hoveredElevation = 10.dp
+                    ),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
                     )
                 ) {
                     Text("Save")
