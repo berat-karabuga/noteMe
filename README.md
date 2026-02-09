@@ -288,7 +288,7 @@ service firebase.storage {
   match /b/{bucket}/o {
     match /images/{imageId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if true;
       allow delete: if request.auth != null;
     }
   }
@@ -308,7 +308,7 @@ dependencies {
     
     // Room Database
     implementation 'androidx.room:room-runtime:2.6.1'
-    kapt 'androidx.room:room-compiler:2.6.1'
+    ksp 'androidx.room:room-compiler:2.6.1'
     implementation 'androidx.room:room-ktx:2.6.1'
     
     // Firebase
